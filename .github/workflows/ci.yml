@@ -1,0 +1,35 @@
+name: Build and Test
+
+on:
+  push:
+    branches: [ "main", "master", "develop" ]
+  pull_request:
+    branches: [ "main", "master" ]
+
+jobs:
+  build:
+    runs-on: windows-latest   # WPF requires Windows
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+
+    - name: Setup .NET 8
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: '8.0.x'
+
+    - name: Restore NuGet packages
+      run: dotnet restore CybersecurityChatbot/CybersecurityChatbot.csproj
+
+    - name: Build solution
+      run: dotnet build CybersecurityChatbot/CybersecurityChatbot.csproj --configuration Release --no-restore
+
+    - name: Publish (self-contained)
+      run: dotnet publish CybersecurityChatbot/CybersecurityChatbot.csproj -c Release -r win-x64 --self-contained false -o ./publish
+
+    - name: Upload build artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: CybersecurityChatbot-Release
+        path: ./publish/

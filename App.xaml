@@ -1,0 +1,291 @@
+<Application x:Class="CybersecurityChatbot.App"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             StartupUri="MainWindow.xaml">
+    <Application.Resources>
+
+        <!-- ═══════════════════════════════════════════════════════
+             PALETTE  —  Deep space / electric violet / neon cyan
+        ══════════════════════════════════════════════════════════ -->
+        <Color x:Key="C0">#050810</Color>   <!-- absolute base -->
+        <Color x:Key="C1">#090D1A</Color>   <!-- panel bg -->
+        <Color x:Key="C2">#0D1220</Color>   <!-- card bg -->
+        <Color x:Key="C3">#111928</Color>   <!-- elevated card -->
+        <Color x:Key="C4">#1A2540</Color>   <!-- border subtle -->
+        <Color x:Key="C5">#243050</Color>   <!-- border hover -->
+        <Color x:Key="CViolet">#7C3AED</Color>
+        <Color x:Key="CVioletL">#9D62FF</Color>
+        <Color x:Key="CCyan">#00D4FF</Color>
+        <Color x:Key="CCyanD">#0099CC</Color>
+        <Color x:Key="CGreen">#00E5A0</Color>
+        <Color x:Key="CAmber">#FFB700</Color>
+        <Color x:Key="CRed">#FF4466</Color>
+        <Color x:Key="CText">#F0F4FF</Color>
+        <Color x:Key="CTextSub">#7A8BB0</Color>
+        <Color x:Key="CTextMuted">#2D3D60</Color>
+
+        <SolidColorBrush x:Key="BgApp"       Color="{StaticResource C0}"/>
+        <SolidColorBrush x:Key="BgPanel"     Color="{StaticResource C1}"/>
+        <SolidColorBrush x:Key="BgCard"      Color="{StaticResource C2}"/>
+        <SolidColorBrush x:Key="BgElevated"  Color="{StaticResource C3}"/>
+        <SolidColorBrush x:Key="BorderSub"   Color="{StaticResource C4}"/>
+        <SolidColorBrush x:Key="BorderHov"   Color="{StaticResource C5}"/>
+        <SolidColorBrush x:Key="Violet"      Color="{StaticResource CViolet}"/>
+        <SolidColorBrush x:Key="VioletL"     Color="{StaticResource CVioletL}"/>
+        <SolidColorBrush x:Key="Cyan"        Color="{StaticResource CCyan}"/>
+        <SolidColorBrush x:Key="Green"       Color="{StaticResource CGreen}"/>
+        <SolidColorBrush x:Key="Amber"       Color="{StaticResource CAmber}"/>
+        <SolidColorBrush x:Key="Red"         Color="{StaticResource CRed}"/>
+        <SolidColorBrush x:Key="TextPrimary" Color="{StaticResource CText}"/>
+        <SolidColorBrush x:Key="TextSecond"  Color="{StaticResource CTextSub}"/>
+        <SolidColorBrush x:Key="TextMuted"   Color="{StaticResource CTextMuted}"/>
+
+        <!-- Gradient brushes -->
+        <LinearGradientBrush x:Key="GradVioletCyan" StartPoint="0,0" EndPoint="1,0">
+            <GradientStop Color="{StaticResource CViolet}" Offset="0"/>
+            <GradientStop Color="{StaticResource CCyan}"   Offset="1"/>
+        </LinearGradientBrush>
+        <LinearGradientBrush x:Key="GradVioletFade" StartPoint="0,0" EndPoint="1,0">
+            <GradientStop Color="{StaticResource CViolet}" Offset="0"/>
+            <GradientStop Color="#007C3AED"               Offset="1"/>
+        </LinearGradientBrush>
+        <LinearGradientBrush x:Key="GradSidebar" StartPoint="0,0" EndPoint="0,1">
+            <GradientStop Color="#0D1220" Offset="0"/>
+            <GradientStop Color="#090D1A" Offset="1"/>
+        </LinearGradientBrush>
+        <LinearGradientBrush x:Key="GradUserBubble" StartPoint="0,0" EndPoint="1,1">
+            <GradientStop Color="#1A0F3A" Offset="0"/>
+            <GradientStop Color="#0F1A35" Offset="1"/>
+        </LinearGradientBrush>
+
+        <!-- ═══════════════════════════════════════════════════════
+             SCROLLBAR  — ultra-thin violet
+        ══════════════════════════════════════════════════════════ -->
+        <Style x:Key="SlimThumb" TargetType="Thumb">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Thumb">
+                        <Border Background="{StaticResource GradVioletCyan}"
+                                CornerRadius="3" Margin="1" Opacity="0.6"/>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style TargetType="ScrollBar">
+            <Setter Property="Width"      Value="4"/>
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ScrollBar">
+                        <Grid>
+                            <Track x:Name="PART_Track" IsDirectionReversed="True">
+                                <Track.Thumb>
+                                    <Thumb Style="{StaticResource SlimThumb}"/>
+                                </Track.Thumb>
+                            </Track>
+                        </Grid>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <!-- ═══════════════════════════════════════════════════════
+             PRIMARY BUTTON  — violet gradient, pill shape
+        ══════════════════════════════════════════════════════════ -->
+        <Style x:Key="BtnPrimary" TargetType="Button">
+            <Setter Property="Foreground"      Value="#F0F4FF"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="FontFamily"      Value="Segoe UI Semibold"/>
+            <Setter Property="FontSize"        Value="13"/>
+            <Setter Property="Cursor"          Value="Hand"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border x:Name="Root" CornerRadius="8" SnapsToDevicePixels="True"
+                                Background="{StaticResource GradVioletCyan}"
+                                Padding="{TemplateBinding Padding}">
+                            <Border.Effect>
+                                <DropShadowEffect Color="#7C3AED" BlurRadius="16"
+                                                  ShadowDepth="0" Opacity="0.4"/>
+                            </Border.Effect>
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="Root" Property="Opacity" Value="0.85"/>
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter TargetName="Root" Property="Opacity" Value="0.7"/>
+                            </Trigger>
+                            <Trigger Property="IsEnabled" Value="False">
+                                <Setter TargetName="Root" Property="Background" Value="#1A2540"/>
+                                <Setter Property="Foreground" Value="#2D3D60"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <!-- Ghost button — glass border -->
+        <Style x:Key="BtnGhost" TargetType="Button">
+            <Setter Property="Background"      Value="Transparent"/>
+            <Setter Property="Foreground"      Value="{StaticResource TextSecond}"/>
+            <Setter Property="BorderBrush"     Value="{StaticResource BorderSub}"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="FontFamily"      Value="Segoe UI"/>
+            <Setter Property="FontSize"        Value="12"/>
+            <Setter Property="Cursor"          Value="Hand"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border x:Name="Root"
+                                Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                CornerRadius="7" Padding="{TemplateBinding Padding}">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="Root" Property="Background"   Value="#111928"/>
+                                <Setter TargetName="Root" Property="BorderBrush"  Value="{StaticResource Violet}"/>
+                                <Setter Property="Foreground" Value="{StaticResource TextPrimary}"/>
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter TargetName="Root" Property="Background" Value="#0D1220"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <!-- Danger ghost -->
+        <Style x:Key="BtnDanger" TargetType="Button" BasedOn="{StaticResource BtnGhost}">
+            <Setter Property="Foreground"  Value="{StaticResource Red}"/>
+            <Setter Property="BorderBrush" Value="#3A1020"/>
+        </Style>
+
+        <!-- Sidebar topic button — left-aligned, no border by default -->
+        <Style x:Key="BtnTopic" TargetType="Button">
+            <Setter Property="Background"          Value="Transparent"/>
+            <Setter Property="Foreground"          Value="{StaticResource TextSecond}"/>
+            <Setter Property="BorderThickness"     Value="0"/>
+            <Setter Property="FontFamily"          Value="Segoe UI"/>
+            <Setter Property="FontSize"            Value="12"/>
+            <Setter Property="Cursor"              Value="Hand"/>
+            <Setter Property="HorizontalContentAlignment" Value="Left"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border x:Name="Root" Background="{TemplateBinding Background}"
+                                CornerRadius="6" Padding="10,0">
+                            <ContentPresenter HorizontalAlignment="Left" VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="Root" Property="Background" Value="#111928"/>
+                                <Setter Property="Foreground" Value="{StaticResource VioletL}"/>
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter TargetName="Root" Property="Background" Value="#0D1220"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <!-- ═══════════════════════════════════════════════════════
+             TEXT INPUT  — glass style
+        ══════════════════════════════════════════════════════════ -->
+        <Style x:Key="ChatInput" TargetType="TextBox">
+            <Setter Property="Background"      Value="#0D1220"/>
+            <Setter Property="Foreground"      Value="#F0F4FF"/>
+            <Setter Property="BorderBrush"     Value="{StaticResource BorderSub}"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Padding"         Value="16,10"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+            <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
+            <Setter Property="FontFamily"      Value="Segoe UI"/>
+            <Setter Property="FontSize"        Value="13.5"/>
+            <Setter Property="CaretBrush"      Value="#F0F4FF"/>
+            <Setter Property="SelectionBrush"  Value="{StaticResource Violet}"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="TextBox">
+                        <Border x:Name="Root"
+                                Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                CornerRadius="10">
+                            <ScrollViewer x:Name="PART_ContentHost"
+                                          Margin="{TemplateBinding Padding}"
+                                          VerticalAlignment="Stretch"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsFocused" Value="True">
+                                <Setter TargetName="Root" Property="BorderBrush" Value="{StaticResource Violet}"/>
+                                <Setter TargetName="Root" Property="Background"  Value="#111928"/>
+                                <Setter TargetName="Root" Property="Effect">
+                                    <Setter.Value>
+                                        <DropShadowEffect Color="#7C3AED" BlurRadius="12"
+                                                          ShadowDepth="0" Opacity="0.25"/>
+                                    </Setter.Value>
+                                </Setter>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <!-- ═══════════════════════════════════════════════════════
+             NAV TAB  — underline indicator style
+        ══════════════════════════════════════════════════════════ -->
+        <Style x:Key="NavTab" TargetType="RadioButton">
+            <Setter Property="Background"      Value="Transparent"/>
+            <Setter Property="Foreground"      Value="{StaticResource TextMuted}"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Padding"         Value="18,0"/>
+            <Setter Property="FontFamily"      Value="Segoe UI Semibold"/>
+            <Setter Property="FontSize"        Value="12.5"/>
+            <Setter Property="Cursor"          Value="Hand"/>
+            <Setter Property="GroupName"       Value="Nav"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="RadioButton">
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="*"/>
+                                <RowDefinition Height="2"/>
+                            </Grid.RowDefinitions>
+                            <Border x:Name="Bg" Grid.Row="0"
+                                    Background="{TemplateBinding Background}"
+                                    Padding="{TemplateBinding Padding}">
+                                <ContentPresenter HorizontalAlignment="Center"
+                                                  VerticalAlignment="Center"/>
+                            </Border>
+                            <Border x:Name="Indicator" Grid.Row="1"
+                                    Background="Transparent" CornerRadius="1"/>
+                        </Grid>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsChecked" Value="True">
+                                <Setter TargetName="Indicator" Property="Background"
+                                        Value="{StaticResource GradVioletCyan}"/>
+                                <Setter Property="Foreground" Value="{StaticResource TextPrimary}"/>
+                                <Setter TargetName="Bg" Property="Background" Value="#0D1220"/>
+                            </Trigger>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Foreground" Value="{StaticResource TextSecond}"/>
+                                <Setter TargetName="Bg" Property="Background" Value="#0D1220"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+    </Application.Resources>
+</Application>
